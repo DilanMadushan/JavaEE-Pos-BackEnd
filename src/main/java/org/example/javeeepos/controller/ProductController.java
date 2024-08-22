@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/product")
+@WebServlet(value = "/product")
 public class ProductController extends HttpServlet {
 
     @Override
