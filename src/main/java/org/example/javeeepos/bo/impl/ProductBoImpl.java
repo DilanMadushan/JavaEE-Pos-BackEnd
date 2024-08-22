@@ -1,5 +1,7 @@
 package org.example.javeeepos.bo.impl;
 
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 import org.example.javeeepos.bo.ProductBo;
 import org.example.javeeepos.dao.ProductDao;
 import org.example.javeeepos.dao.impl.ProductDaoImpl;
@@ -13,8 +15,13 @@ public class ProductBoImpl implements ProductBo {
 
     ProductDao productDao = new ProductDaoImpl();
     @Override
-    public boolean saveProduct(ProductDto productDto) {
-        return false;
+    public boolean saveProduct(ProductDto productDto) throws SQLException, NamingException {
+       return productDao.saveProduct(new Product(
+               productDto.getId(),
+               productDto.getName(),
+               productDto.getPrice(),
+               productDto.getQty()
+       ));
     }
 
     @Override

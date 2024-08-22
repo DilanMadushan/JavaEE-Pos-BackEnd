@@ -12,8 +12,20 @@ import java.sql.SQLException;
 
 public class ProductDaoImpl implements ProductDao {
     @Override
-    public boolean saveProduct(Product product) {
-        return false;
+    public boolean saveProduct(Product product) throws SQLException, NamingException {
+        String sql = "INSERT INTO product VALUES(?,?,?,?)";
+        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
+        pstm.setString(1, product.getId());
+        pstm.setString(2, product.getName());
+        pstm.setDouble(3, product.getPrice());
+        pstm.setDouble(4, product.getQty());
+
+        try{
+            return pstm.executeUpdate() >0;
+
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override

@@ -7,7 +7,7 @@ import javax.naming.NamingException;
 import java.sql.SQLException;
 
 public interface ProductDao {
-    boolean saveProduct(Product product);
+    boolean saveProduct(Product product) throws SQLException, NamingException;
     boolean updateProduct(Product product);
     boolean deleteProduct(String id);
     Product getProduct(String id) throws SQLException, NamingException;

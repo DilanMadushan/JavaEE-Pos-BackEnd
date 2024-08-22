@@ -13,6 +13,7 @@ import org.example.javeeepos.dto.ProductDto;
 import org.example.javeeepos.entity.Product;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet(value = "/product")
 public class ProductController extends HttpServlet {
@@ -34,7 +35,20 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        Jsonb jsonb = JsonbBuilder.create();
+        ProductDto productDto = jsonb.fromJson(req.getReader(), ProductDto.class);
+        try(var writer = resp.getWriter()){
+            boolean isSaved = productBo.saveProduct(productDto);
+
+            if (isSaved) {
+                writer.println("Saved Successfully");
+            }else{
+                writer.println("Saved Failed");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
