@@ -24,8 +24,13 @@ public class customerBoImpl implements CustomerBo {
     }
 
     @Override
-    public boolean updateCustomer(CustomerDTO customerDTO) {
-        return false;
+    public boolean updateCustomer(CustomerDTO customerDTO) throws SQLException, NamingException {
+        return customerDao.updateCustomer(new Customer(
+                customerDTO.getId(),
+                customerDTO.getName(),
+                customerDTO.getAddress(),
+                customerDTO.getTel()
+        ));
     }
 
     @Override

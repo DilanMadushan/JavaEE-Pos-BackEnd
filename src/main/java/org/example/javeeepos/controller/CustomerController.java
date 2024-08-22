@@ -43,7 +43,6 @@ public class CustomerController extends HttpServlet{
                 printWriter.println("Failed");
             }
 
-
         } catch (SQLException | NamingException  e) {
             throw new RuntimeException(e);
         }
@@ -68,6 +67,20 @@ public class CustomerController extends HttpServlet{
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+        Jsonb jsonb = JsonbBuilder.create();
+        CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
+
+        try(PrintWriter printWriter = resp.getWriter()){
+            boolean isUpdated = customerBo.updateCustomer(customerDTO);
+
+            if (isUpdated) {
+                printWriter.println("Updated Successfully");
+            }else{
+                printWriter.println("Updated Failed");
+            }
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package org.example.javeeepos.dao.impl;
 
 import org.example.javeeepos.dao.CustomerDao;
+import org.example.javeeepos.dto.CustomerDTO;
 import org.example.javeeepos.entity.Customer;
 import org.example.javeeepos.util.DbConnection;
 
@@ -8,7 +9,6 @@ import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 
 public class CustomerDaoImpl implements CustomerDao {
 
@@ -33,8 +33,19 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public boolean updateCustomer(Customer customer) {
-        return false;
+    public boolean updateCustomer(Customer customer) throws SQLException, NamingException {
+        String sql = "UPDATE customer SET name = ? ,address = ? , tel = ? WHERE id = ?";
+        PreparedStatement pstm = DbConnection.getInstance().connection.prepareStatement(sql);
+        pstm.setString(1,customer.getName());
+        pstm.setString(2,customer.getAddress());
+        pstm.setString(3,customer.getTel());
+        pstm.setString(4,customer.getId());
+
+        try{
+            return pstm.executeUpdate()>0;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override
