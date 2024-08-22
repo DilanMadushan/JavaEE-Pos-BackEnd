@@ -10,5 +10,5 @@ public interface CustomerDao {
     boolean saveCustomer(Customer customer) throws SQLException, NamingException;
     boolean updateCustomer(Customer customer) throws SQLException, NamingException;
     boolean deleteCustomer(String id) throws SQLException, NamingException;
-    Customer getCustomer(String id);
+    Customer getCustomer(String id) throws SQLException, NamingException;
 }

@@ -8,14 +8,13 @@ import org.example.javeeepos.util.DbConnection;
 import javax.naming.NamingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public boolean saveCustomer(Customer customer) throws SQLException, NamingException {
-
-        System.out.println(customer.toString());
 
         String sql = "INSERT INTO customer VALUES(?,?,?,?)";
         Connection connection = DbConnection.getInstance().getConnection();
@@ -63,7 +62,25 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer getCustomer(String id) {
+    public Customer getCustomer(String id) throws SQLException, NamingException {
+        String sql = "SELECT * FROM customer WHERE id = ?";
+        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
+        pstm.setString(1,id);
+
+        try {
+            ResultSet resultSet =  pstm.executeQuery();
+            while (resultSet.next()){
+                return new Customer(
+                        resultSet.getString("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("address"),
+                        resultSet.getString("tel")
+                );
+            }
+
+        }catch (Exception e){
+           e.printStackTrace();
+        }
         return null;
     }
 }

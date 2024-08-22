@@ -27,7 +27,15 @@ public class CustomerController extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        String id = req.getParameter("id");
+        try(var writer = resp.getWriter()){
+            CustomerDTO customerDTO = customerBo.getCustomer(id);
+            resp.setContentType("application/json");
+            Jsonb jsonb = JsonbBuilder.create();
+            jsonb.toJson(customerDTO,writer);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

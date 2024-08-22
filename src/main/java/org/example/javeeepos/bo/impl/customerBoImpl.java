@@ -34,8 +34,14 @@ public class customerBoImpl implements CustomerBo {
     }
 
     @Override
-    public List<CustomerDTO> getCustomer(CustomerDTO customerDTO) {
-        return null;
+    public CustomerDTO getCustomer(String id) throws SQLException, NamingException {
+        Customer customer = customerDao.getCustomer(id);
+        return new CustomerDTO(
+                customer.getId(),
+                customer.getName(),
+                customer.getAddress(),
+                customer.getTel()
+        );
     }
 
     @Override

@@ -9,6 +9,6 @@ import java.util.List;
 public interface CustomerBo {
     boolean saveCustomer(CustomerDTO customerDTO) throws SQLException, NamingException;
     boolean updateCustomer(CustomerDTO customerDTO) throws SQLException, NamingException;
-    List<CustomerDTO> getCustomer(CustomerDTO customerDTO);
+    CustomerDTO getCustomer(String id) throws SQLException, NamingException;
     boolean DeleteCustomer(String id) throws SQLException, NamingException;
 }
