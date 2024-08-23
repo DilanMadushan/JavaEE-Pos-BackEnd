@@ -25,8 +25,13 @@ public class ProductBoImpl implements ProductBo {
     }
 
     @Override
-    public boolean updateProduct(ProductDto productDto) {
-        return false;
+    public boolean updateProduct(ProductDto productDto) throws SQLException, NamingException {
+        return productDao.updateProduct(new Product(
+                productDto.getId(),
+                productDto.getName(),
+                productDto.getPrice(),
+                productDto.getQty()
+        ));
     }
 
     @Override

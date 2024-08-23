@@ -53,11 +53,25 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+        Jsonb jsonb = JsonbBuilder.create();
+        ProductDto productDto = jsonb.fromJson(req.getReader(), ProductDto.class);
+
+        try(var writer = resp.getWriter()){
+
+            boolean isUpdated = productBo.updateProduct(productDto);
+            if (isUpdated) {
+                writer.println("Update Successfully");
+            }else{
+                writer.println("Update Failed");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doDelete(req, resp);
+
     }
 }
