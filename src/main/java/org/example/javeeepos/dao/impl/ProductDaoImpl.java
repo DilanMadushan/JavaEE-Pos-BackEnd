@@ -45,8 +45,16 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public boolean deleteProduct(String id) {
-        return false;
+    public boolean deleteProduct(String id) throws SQLException, NamingException {
+        String sql = "DELETE FROM product WHERE id = ?";
+        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
+        pstm.setString(1,id);
+
+        try{
+            return pstm.executeUpdate() >0;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override

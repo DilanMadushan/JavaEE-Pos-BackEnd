@@ -9,6 +9,6 @@ import java.sql.SQLException;
 public interface ProductDao {
     boolean saveProduct(Product product) throws SQLException, NamingException;
     boolean updateProduct(Product product) throws SQLException, NamingException;
-    boolean deleteProduct(String id);
+    boolean deleteProduct(String id) throws SQLException, NamingException;
     Product getProduct(String id) throws SQLException, NamingException;
 }

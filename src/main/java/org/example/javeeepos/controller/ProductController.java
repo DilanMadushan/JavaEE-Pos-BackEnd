@@ -72,6 +72,20 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
 
+        try(var writer = resp.getWriter()){
+
+            boolean isDelete = productBo.deleteProduct(id);
+
+            if (isDelete) {
+                writer.println("Delete Successfully");
+            }else{
+                writer.println("Delete Failed");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

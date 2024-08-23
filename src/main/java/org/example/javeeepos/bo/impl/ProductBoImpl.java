@@ -35,8 +35,8 @@ public class ProductBoImpl implements ProductBo {
     }
 
     @Override
-    public boolean deleteProduct(String id) {
-        return false;
+    public boolean deleteProduct(String id) throws SQLException, NamingException {
+        return productDao.deleteProduct(id);
     }
 
     @Override
