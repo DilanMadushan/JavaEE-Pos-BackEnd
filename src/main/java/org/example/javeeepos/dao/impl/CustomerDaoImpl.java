@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerDaoImpl implements CustomerDao {
 
@@ -80,6 +82,35 @@ public class CustomerDaoImpl implements CustomerDao {
 
         }catch (Exception e){
            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Customer> getAllCustomer() throws SQLException, NamingException {
+
+        try{
+            String sql = "SELECT * FROM customer";
+            PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
+
+            ResultSet resultSet = pstm.executeQuery();
+
+
+            List<Customer> customers = new ArrayList<>();
+
+            while (resultSet.next()) {
+                customers.add(new Customer(
+                        resultSet.getString("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("address"),
+                        resultSet.getString("tel")
+                ));
+            }
+
+            return customers;
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return null;
     }

@@ -10,5 +10,6 @@ public interface CustomerBo {
     boolean saveCustomer(CustomerDTO customerDTO) throws SQLException, NamingException;
     boolean updateCustomer(CustomerDTO customerDTO) throws SQLException, NamingException;
     CustomerDTO getCustomer(String id) throws SQLException, NamingException;
+    List<CustomerDTO> getAllCustomer() throws SQLException, NamingException;
     boolean DeleteCustomer(String id) throws SQLException, NamingException;
 }

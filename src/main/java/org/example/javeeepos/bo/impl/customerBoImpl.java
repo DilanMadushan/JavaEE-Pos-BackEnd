@@ -8,6 +8,7 @@ import org.example.javeeepos.entity.Customer;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class customerBoImpl implements CustomerBo {
@@ -42,6 +43,21 @@ public class customerBoImpl implements CustomerBo {
                 customer.getAddress(),
                 customer.getTel()
         );
+    }
+
+    @Override
+    public List<CustomerDTO> getAllCustomer() throws SQLException, NamingException {
+        List<Customer> customers =  customerDao.getAllCustomer();
+        List<CustomerDTO> cusSet = new ArrayList<>();
+        for(Customer cus: customers){
+            cusSet.add(new CustomerDTO(
+                    cus.getId(),
+                    cus.getName(),
+                    cus.getAddress(),
+                    cus.getTel()
+            ));
+        }
+        return cusSet;
     }
 
     @Override

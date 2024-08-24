@@ -12,7 +12,13 @@ import java.io.IOException;
 public class OrderController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        String id = req.getParameter("id");
+
+        if (id==null) {
+            System.out.println("Get all");
+        }else{
+            System.out.println("Search");
+        }
     }
 
     @Override

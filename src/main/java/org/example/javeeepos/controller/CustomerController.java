@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet(urlPatterns = "/customer")
 public class CustomerController extends HttpServlet{
@@ -28,14 +29,29 @@ public class CustomerController extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
-        try(var writer = resp.getWriter()){
-            CustomerDTO customerDTO = customerBo.getCustomer(id);
-            resp.setContentType("application/json");
-            Jsonb jsonb = JsonbBuilder.create();
-            jsonb.toJson(customerDTO,writer);
-        }catch (Exception e){
-            throw new RuntimeException(e);
+
+        if (id!=null) {
+
+            try(var writer = resp.getWriter()){
+                CustomerDTO customerDTO = customerBo.getCustomer(id);
+                resp.setContentType("application/json");
+                Jsonb jsonb = JsonbBuilder.create();
+                jsonb.toJson(customerDTO,writer);
+            }catch (Exception e){
+                throw new RuntimeException(e);
+            }
+
+        }else {
+            try (var writer = resp.getWriter()) {
+                List<CustomerDTO> customer = customerBo.getAllCustomer();
+                resp.setContentType("application/json");
+                Jsonb jsonb = JsonbBuilder.create();
+                jsonb.toJson(customer, writer);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
+
     }
 
     @Override
