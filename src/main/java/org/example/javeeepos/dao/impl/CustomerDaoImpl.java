@@ -36,7 +36,7 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public boolean updateCustomer(Customer customer) throws SQLException, NamingException {
         String sql = "UPDATE customer SET name = ? ,address = ? , tel = ? WHERE id = ?";
-        PreparedStatement pstm = DbConnection.getInstance().connection.prepareStatement(sql);
+        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setString(1,customer.getName());
         pstm.setString(2,customer.getAddress());
         pstm.setString(3,customer.getTel());
@@ -52,7 +52,7 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public boolean deleteCustomer(String id) throws SQLException, NamingException {
         String sql = "DELETE FROM customer WHERE id = ?";
-        Connection connection = DbConnection.getInstance().connection;
+        Connection connection = DbConnection.getInstance().getConnection();
         PreparedStatement pstm = connection.prepareStatement(sql);
         pstm.setString(1,id);
 

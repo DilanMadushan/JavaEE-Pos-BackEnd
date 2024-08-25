@@ -31,7 +31,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public boolean updateProduct(Product product) throws SQLException, NamingException {
        String sql = "UPDATE product SET name = ?,price = ?,qty = ? WHERE id = ?";
-       PreparedStatement pstm = DbConnection.getInstance().connection.prepareStatement(sql);
+       PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
        pstm.setString(1,product.getName());
        pstm.setDouble(2,product.getPrice());
        pstm.setDouble(3,product.getQty());

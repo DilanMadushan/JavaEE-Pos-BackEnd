@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class DbConnection {
     public static DbConnection dbConnection;
 
-    public Connection connection;
+    private Connection connection;
 
     public DbConnection() throws NamingException, SQLException {
         InitialContext ctx = new InitialContext();
