@@ -49,4 +49,14 @@ public class ProductBoImpl implements ProductBo {
                 product.getQty()
         );
     }
+
+    @Override
+    public boolean updateProductQty(ProductDto productDto) throws SQLException, NamingException {
+        return productDao.updateProductQty(new Product(
+                productDto.getId(),
+                productDto.getName(),
+                productDto.getPrice(),
+                productDto.getQty()
+        ));
+    }
 }

@@ -80,4 +80,18 @@ public class ProductDaoImpl implements ProductDao {
         }
         return null;
     }
+
+    @Override
+    public boolean updateProductQty(Product product) throws SQLException, NamingException {
+        String sql = "UPDATE product SET qty = qty - ? WHERE id = ? ";
+        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
+        pstm.setDouble(1,product.getQty());
+        pstm.setString(2,product.getId());
+
+        try{
+            return pstm.executeUpdate()>0;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 }

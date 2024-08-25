@@ -11,4 +11,6 @@ public interface ProductDao {
     boolean updateProduct(Product product) throws SQLException, NamingException;
     boolean deleteProduct(String id) throws SQLException, NamingException;
     Product getProduct(String id) throws SQLException, NamingException;
+
+    boolean updateProductQty(Product product) throws SQLException, NamingException;
 }

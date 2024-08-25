@@ -7,12 +7,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.javeeepos.bo.OrderBo;
+import org.example.javeeepos.bo.ProductBo;
+import org.example.javeeepos.bo.impl.OrderBoImpl;
+import org.example.javeeepos.bo.impl.ProductBoImpl;
 import org.example.javeeepos.dao.OrderDao;
 import org.example.javeeepos.dao.ProductDao;
 import org.example.javeeepos.dao.impl.OrderDaoImpl;
 import org.example.javeeepos.dao.impl.ProductDaoImpl;
 import org.example.javeeepos.dto.OrderDetailsDto;
 import org.example.javeeepos.dto.OrderDto;
+import org.example.javeeepos.dto.ProductDto;
 import org.example.javeeepos.util.DbConnection;
 
 import java.io.IOException;
@@ -24,9 +29,8 @@ import java.util.List;
 @WebServlet(value = "/order")
 public class OrderController extends HttpServlet {
 
-    OrderDao orderDao = new OrderDaoImpl();
-    ProductDao productDao = new ProductDaoImpl();
-
+    OrderBo orderBo = new OrderBoImpl();
+    ProductBo productBo = new ProductBoImpl();
     Connection connection  = null;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -44,23 +48,54 @@ public class OrderController extends HttpServlet {
                 LocalDate.now()
         );
 
-        try{
-            connection = DbConnection.getInstance().getConnection();
-            connection.setAutoCommit(false);
+        List<ProductDto> productList = new ArrayList<>();
 
-            boolean isSaved = orderDao.saveOrder(orderDto);
-            if (isSaved) {
-
-                productDao.updateProduct()
-
-            }else{
-                connection.rollback();
-            }
-
-
-        }catch (Exception e){
-            e.printStackTrace();
+        for (OrderDetailsDto dto : detailsDto) {
+            productList.add(new ProductDto(
+                    dto.getProId(),
+                    null,
+                    0,
+                    dto.getQty()
+            ));
         }
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try{
+                    connection = DbConnection.getInstance().getConnection();
+                    connection.setAutoCommit(false);
+
+                    boolean isSaved = orderBo.saveOrder(orderDto);
+
+                    if (isSaved) {
+                        System.out.println("Saved");
+
+                        boolean isUpdated = false;
+
+                        for (ProductDto productDto : productList) {
+                            isUpdated = productBo.updateProductQty(productDto);
+                        }
+
+                        if (isUpdated) {
+                            System.out.println("Updated");
+                        }
+
+                    }else{
+                        connection.rollback();
+                    }
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+
+
     }
 
 

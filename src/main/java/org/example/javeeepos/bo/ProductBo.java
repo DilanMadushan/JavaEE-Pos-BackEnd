@@ -10,4 +10,5 @@ public interface ProductBo {
     boolean updateProduct(ProductDto productDto) throws SQLException, NamingException;
     boolean deleteProduct(String id) throws SQLException, NamingException;
     ProductDto getProduct(String id) throws SQLException, NamingException;
+    boolean updateProductQty(ProductDto productDto) throws SQLException, NamingException;
 }
