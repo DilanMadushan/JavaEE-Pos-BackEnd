@@ -1,10 +1,9 @@
-package org.example.javeeepos.bo.impl;
+package org.example.javeeepos.bo.Custom.impl;
 
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
-import org.example.javeeepos.bo.ProductBo;
-import org.example.javeeepos.dao.ProductDao;
-import org.example.javeeepos.dao.impl.ProductDaoImpl;
+import org.example.javeeepos.bo.Custom.ProductBo;
+import org.example.javeeepos.dao.DaoFactory;
+import org.example.javeeepos.dao.custom.ProductDao;
+import org.example.javeeepos.dao.custom.impl.ProductDaoImpl;
 import org.example.javeeepos.dto.ProductDto;
 import org.example.javeeepos.entity.Product;
 
@@ -15,7 +14,7 @@ import java.util.List;
 
 public class ProductBoImpl implements ProductBo {
 
-    ProductDao productDao = new ProductDaoImpl();
+    ProductDao productDao = (ProductDao) DaoFactory.getDaoFactory().getDao(DaoFactory.DaoTypes.PRODUCT);
     @Override
     public boolean saveProduct(ProductDto productDto) throws SQLException, NamingException {
        return productDao.save(new Product(

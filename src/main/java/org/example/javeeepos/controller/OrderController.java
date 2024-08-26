@@ -8,27 +8,20 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
-import org.example.javeeepos.bo.OrderBo;
-import org.example.javeeepos.bo.OrderDetailsBo;
-import org.example.javeeepos.bo.ProductBo;
-import org.example.javeeepos.bo.impl.OrderBoImpl;
-import org.example.javeeepos.bo.impl.OrderDetailsBoImpl;
-import org.example.javeeepos.bo.impl.ProductBoImpl;
-import org.example.javeeepos.dao.OrderDao;
-import org.example.javeeepos.dao.ProductDao;
-import org.example.javeeepos.dao.impl.OrderDaoImpl;
-import org.example.javeeepos.dao.impl.ProductDaoImpl;
+import org.example.javeeepos.bo.BoFactory;
+import org.example.javeeepos.bo.Custom.OrderBo;
+import org.example.javeeepos.bo.Custom.OrderDetailsBo;
+import org.example.javeeepos.bo.Custom.ProductBo;
+import org.example.javeeepos.bo.Custom.impl.OrderBoImpl;
+import org.example.javeeepos.bo.Custom.impl.OrderDetailsBoImpl;
+import org.example.javeeepos.bo.Custom.impl.ProductBoImpl;
 import org.example.javeeepos.dto.OrderDetailsDto;
 import org.example.javeeepos.dto.OrderDto;
 import org.example.javeeepos.dto.ProductDto;
 import org.example.javeeepos.util.DbConnection;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Wrapper;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +30,9 @@ import java.util.List;
 public class OrderController extends HttpServlet {
 
     Connection connection  = null;
-    OrderBo orderBo = new OrderBoImpl();
-    ProductBo productBo = new ProductBoImpl();
-    OrderDetailsBo orderDetailsBo = new OrderDetailsBoImpl();
+    OrderBo orderBo = (OrderBo) BoFactory.getBoFactory().getBo(BoFactory.BoTypes.ORDER);
+    ProductBo productBo = (ProductBo) BoFactory.getBoFactory().getBo(BoFactory.BoTypes.PRODUCT);
+    OrderDetailsBo orderDetailsBo = (OrderDetailsBo) BoFactory.getBoFactory().getBo(BoFactory.BoTypes.ORDERDETAILS);
     boolean isPlaced = false;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -60,6 +53,7 @@ public class OrderController extends HttpServlet {
         List<ProductDto> productList = new ArrayList<>();
 
         for (OrderDetailsDto dto : detailsDto) {
+
             productList.add(new ProductDto(
                     dto.getProId(),
                     null,
@@ -133,6 +127,7 @@ public class OrderController extends HttpServlet {
                 }
             }
         }).start();
+
     }
 
 

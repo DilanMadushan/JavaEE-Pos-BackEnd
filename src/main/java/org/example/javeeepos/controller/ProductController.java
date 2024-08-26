@@ -7,19 +7,18 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.javeeepos.bo.ProductBo;
-import org.example.javeeepos.bo.impl.ProductBoImpl;
+import org.example.javeeepos.bo.BoFactory;
+import org.example.javeeepos.bo.Custom.ProductBo;
+import org.example.javeeepos.bo.Custom.impl.ProductBoImpl;
 import org.example.javeeepos.dto.ProductDto;
-import org.example.javeeepos.entity.Product;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet(value = "/product")
 public class ProductController extends HttpServlet {
 
-    ProductBo productBo = new ProductBoImpl();
+    ProductBo productBo = (ProductBo) BoFactory.getBoFactory().getBo(BoFactory.BoTypes.PRODUCT);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");

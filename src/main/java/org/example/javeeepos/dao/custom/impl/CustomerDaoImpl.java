@@ -1,7 +1,7 @@
-package org.example.javeeepos.dao.impl;
+package org.example.javeeepos.dao.custom.impl;
 
-import org.example.javeeepos.dao.CustomerDao;
-import org.example.javeeepos.dto.CustomerDTO;
+import org.example.javeeepos.dao.SqlUtil;
+import org.example.javeeepos.dao.custom.CustomerDao;
 import org.example.javeeepos.entity.Customer;
 import org.example.javeeepos.util.DbConnection;
 
@@ -15,19 +15,15 @@ import java.util.List;
 
 public class CustomerDaoImpl implements CustomerDao {
 
+    SqlUtil sqlUtil = new SqlUtil();
+
     @Override
-    public boolean save(Customer customer) throws SQLException, NamingException {
+    public boolean save(Customer customer) throws SQLException, NamingException{
 
-        String sql = "INSERT INTO customer VALUES(?,?,?,?)";
-        Connection connection = DbConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1,customer.getId());
-        pstm.setString(2,customer.getName());
-        pstm.setString(3,customer.getAddress());
-        pstm.setString(4,customer.getTel());
+        try {
+            return sqlUtil.execute("INSERT INTO customer VALUES(?,?,?,?)",
+                    customer.getId(),customer.getName(),customer.getAddress(),customer.getTel());
 
-        try{
-            return pstm.executeUpdate() >0;
         }catch (Exception e){
             return false;
         }
@@ -35,15 +31,9 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public boolean update(Customer customer) throws SQLException, NamingException {
-        String sql = "UPDATE customer SET name = ? ,address = ? , tel = ? WHERE id = ?";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setString(1,customer.getName());
-        pstm.setString(2,customer.getAddress());
-        pstm.setString(3,customer.getTel());
-        pstm.setString(4,customer.getId());
-
         try{
-            return pstm.executeUpdate()>0;
+            return sqlUtil.execute("UPDATE customer SET name = ? ,address = ? , tel = ? WHERE id = ?",
+                    customer.getName(),customer.getAddress(),customer.getTel(),customer.getId());
         }catch (Exception e){
             return false;
         }
@@ -51,13 +41,8 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public boolean delete(String id) throws SQLException, NamingException {
-        String sql = "DELETE FROM customer WHERE id = ?";
-        Connection connection = DbConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setString(1,id);
-
         try{
-            return pstm.executeUpdate() >0;
+            return sqlUtil.execute("DELETE FROM customer WHERE id = ?",id);
         }catch (Exception e){
             return false;
         }
@@ -65,12 +50,8 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public Customer get(String id) throws SQLException, NamingException {
-        String sql = "SELECT * FROM customer WHERE id = ?";
-        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-        pstm.setString(1,id);
-
         try {
-            ResultSet resultSet =  pstm.executeQuery();
+            ResultSet resultSet =  sqlUtil.execute("SELECT * FROM customer WHERE id = ?",id);
             while (resultSet.next()){
                 return new Customer(
                         resultSet.getString("id"),
@@ -90,10 +71,7 @@ public class CustomerDaoImpl implements CustomerDao {
     public List<Customer> getAll() throws SQLException, NamingException {
 
         try{
-            String sql = "SELECT * FROM customer";
-            PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
-
-            ResultSet resultSet = pstm.executeQuery();
+            ResultSet resultSet = sqlUtil.execute("SELECT * FROM customer");
 
 
             List<Customer> customers = new ArrayList<>();

@@ -1,12 +1,13 @@
-package org.example.javeeepos.dao;
+package org.example.javeeepos.dao.custom;
 
+import org.example.javeeepos.dao.SuperDao;
 import org.example.javeeepos.entity.Customer;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface CrudDao<T> extends SuperDao{
+public interface CrudDao<T> extends SuperDao {
     boolean save(T customer) throws SQLException, NamingException;
     boolean update(T customer) throws SQLException, NamingException;
     boolean delete(String id) throws SQLException, NamingException;

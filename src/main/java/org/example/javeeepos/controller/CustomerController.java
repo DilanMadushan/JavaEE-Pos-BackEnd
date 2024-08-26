@@ -7,24 +7,21 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.javeeepos.bo.CustomerBo;
-import org.example.javeeepos.bo.impl.customerBoImpl;
-import org.example.javeeepos.dao.CustomerDao;
+import org.example.javeeepos.bo.BoFactory;
+import org.example.javeeepos.bo.Custom.CustomerBo;
+import org.example.javeeepos.bo.Custom.impl.CustomerBoImpl;
 import org.example.javeeepos.dto.CustomerDTO;
 
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(urlPatterns = "/customer")
 public class CustomerController extends HttpServlet{
 
-    CustomerBo customerBo = new customerBoImpl();
+    CustomerBo customerBo = (CustomerBo) BoFactory.getBoFactory().getBo(BoFactory.BoTypes.CUSTOMER);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

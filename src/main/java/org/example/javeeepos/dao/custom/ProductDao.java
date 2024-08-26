@@ -1,6 +1,5 @@
-package org.example.javeeepos.dao;
+package org.example.javeeepos.dao.custom;
 
-import org.example.javeeepos.entity.Customer;
 import org.example.javeeepos.entity.Product;
 
 import javax.naming.NamingException;

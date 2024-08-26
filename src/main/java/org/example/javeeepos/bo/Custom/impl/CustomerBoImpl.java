@@ -1,8 +1,9 @@
-package org.example.javeeepos.bo.impl;
+package org.example.javeeepos.bo.Custom.impl;
 
-import org.example.javeeepos.bo.CustomerBo;
-import org.example.javeeepos.dao.CustomerDao;
-import org.example.javeeepos.dao.impl.CustomerDaoImpl;
+import org.example.javeeepos.bo.Custom.CustomerBo;
+import org.example.javeeepos.dao.DaoFactory;
+import org.example.javeeepos.dao.custom.CustomerDao;
+import org.example.javeeepos.dao.custom.impl.CustomerDaoImpl;
 import org.example.javeeepos.dto.CustomerDTO;
 import org.example.javeeepos.entity.Customer;
 
@@ -11,9 +12,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class customerBoImpl implements CustomerBo {
+public class CustomerBoImpl implements CustomerBo {
 
-    CustomerDao customerDao = new CustomerDaoImpl();
+    CustomerDao customerDao = (CustomerDao) DaoFactory.getDaoFactory().getDao(DaoFactory.DaoTypes.CUSTOMER);
     @Override
     public boolean saveCustomer(CustomerDTO customerDTO) throws SQLException, NamingException {
         return customerDao.save(new Customer(

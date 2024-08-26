@@ -1,11 +1,6 @@
-package org.example.javeeepos.dao;
+package org.example.javeeepos.dao.custom;
 
-import org.example.javeeepos.dto.CustomerDTO;
 import org.example.javeeepos.entity.Customer;
-
-import javax.naming.NamingException;
-import java.sql.SQLException;
-import java.util.List;
 
 public interface CustomerDao extends CrudDao<Customer> {
 //    boolean saveCustomer(Customer customer) throws SQLException, NamingException;

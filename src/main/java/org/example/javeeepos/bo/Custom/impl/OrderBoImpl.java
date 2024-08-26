@@ -1,21 +1,18 @@
-package org.example.javeeepos.bo.impl;
+package org.example.javeeepos.bo.Custom.impl;
 
-import org.example.javeeepos.bo.OrderBo;
-import org.example.javeeepos.dao.OrderDao;
-import org.example.javeeepos.dao.impl.OrderDaoImpl;
+import org.example.javeeepos.bo.Custom.OrderBo;
+import org.example.javeeepos.dao.DaoFactory;
+import org.example.javeeepos.dao.custom.OrderDao;
+import org.example.javeeepos.dao.custom.impl.OrderDaoImpl;
 import org.example.javeeepos.dto.OrderDto;
 import org.example.javeeepos.entity.Order;
-import org.example.javeeepos.util.DbConnection;
 
 import javax.naming.NamingException;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class OrderBoImpl implements OrderBo{
 
-    OrderDao orderDao = new OrderDaoImpl();
+    OrderDao orderDao = (OrderDao) DaoFactory.getDaoFactory().getDao(DaoFactory.DaoTypes.ORDER);
     @Override
     public boolean saveOrder(OrderDto orderDto) throws SQLException, NamingException {
         return orderDao.save(new Order(
