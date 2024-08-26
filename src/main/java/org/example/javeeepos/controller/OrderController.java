@@ -71,7 +71,7 @@ public class OrderController extends HttpServlet {
             @Override
             public void run() {
 
-                try{
+                try(var writer = resp.getWriter()){
                     connection = DbConnection.getInstance().getConnection();
                     connection.setAutoCommit(false);
 
@@ -98,7 +98,6 @@ public class OrderController extends HttpServlet {
 
                             if (isDetailSaved) {
                                 connection.commit();
-                                System.out.println("Transaction is done");
                             }else{
                                 connection.rollback();
                             }
