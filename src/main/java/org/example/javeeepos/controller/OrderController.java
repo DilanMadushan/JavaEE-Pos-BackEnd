@@ -7,9 +7,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import org.example.javeeepos.bo.OrderBo;
+import org.example.javeeepos.bo.OrderDetailsBo;
 import org.example.javeeepos.bo.ProductBo;
 import org.example.javeeepos.bo.impl.OrderBoImpl;
+import org.example.javeeepos.bo.impl.OrderDetailsBoImpl;
 import org.example.javeeepos.bo.impl.ProductBoImpl;
 import org.example.javeeepos.dao.OrderDao;
 import org.example.javeeepos.dao.ProductDao;
@@ -22,6 +25,7 @@ import org.example.javeeepos.util.DbConnection;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +33,11 @@ import java.util.List;
 @WebServlet(value = "/order")
 public class OrderController extends HttpServlet {
 
+    Connection connection  = null;
     OrderBo orderBo = new OrderBoImpl();
     ProductBo productBo = new ProductBoImpl();
-    Connection connection  = null;
+
+    OrderDetailsBo orderDetailsBo = new OrderDetailsBoImpl();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -61,6 +67,7 @@ public class OrderController extends HttpServlet {
 
 
         new Thread(new Runnable() {
+            @SneakyThrows
             @Override
             public void run() {
 
@@ -81,6 +88,24 @@ public class OrderController extends HttpServlet {
 
                         if (isUpdated) {
                             System.out.println("Updated");
+                            boolean isDetailSaved = false;
+
+                            for (OrderDetailsDto dto : detailsDto) {
+                                isDetailSaved = orderDetailsBo.saveOrderDetails(dto);
+                            }
+
+                            System.out.println(isDetailSaved);
+
+                            if (isDetailSaved) {
+                                connection.commit();
+                                System.out.println("Transaction is done");
+                            }else{
+                                connection.rollback();
+                            }
+
+
+                        }else{
+                            connection.rollback();
                         }
 
                     }else{
@@ -90,6 +115,8 @@ public class OrderController extends HttpServlet {
 
                 }catch (Exception e){
                     e.printStackTrace();
+                }finally {
+                    connection.setAutoCommit(true);
                 }
 
             }
