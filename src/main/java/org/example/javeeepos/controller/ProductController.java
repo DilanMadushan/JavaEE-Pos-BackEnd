@@ -14,6 +14,7 @@ import org.example.javeeepos.entity.Product;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 @WebServlet(value = "/product")
 public class ProductController extends HttpServlet {
@@ -23,14 +24,29 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
 
-        try(var writer = resp.getWriter()){
-            ProductDto productDto = productBo.getProduct(id);
-            resp.setContentType("application/json");
-            Jsonb jsonb = JsonbBuilder.create();
-            jsonb.toJson(productDto,writer);
-        }catch (Exception e){
-            e.printStackTrace();
+        if(id!=null){
+            try(var writer = resp.getWriter()){
+                ProductDto productDto = productBo.getProduct(id);
+                resp.setContentType("application/json");
+                Jsonb jsonb = JsonbBuilder.create();
+                jsonb.toJson(productDto,writer);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }else{
+            try(var writer = resp.getWriter()){
+                List<ProductDto> productDto = productBo.getAllProduct();
+                resp.setContentType("application/json");
+                Jsonb jsonb = JsonbBuilder.create();
+                jsonb.toJson(productDto,writer);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
+
+
     }
 
     @Override

@@ -9,10 +9,12 @@ import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
     @Override
-    public boolean saveProduct(Product product) throws SQLException, NamingException {
+    public boolean save(Product product) throws SQLException, NamingException {
         String sql = "INSERT INTO product VALUES(?,?,?,?)";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setString(1, product.getId());
@@ -29,7 +31,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public boolean updateProduct(Product product) throws SQLException, NamingException {
+    public boolean update(Product product) throws SQLException, NamingException {
        String sql = "UPDATE product SET name = ?,price = ?,qty = ? WHERE id = ?";
        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
        pstm.setString(1,product.getName());
@@ -45,7 +47,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public boolean deleteProduct(String id) throws SQLException, NamingException {
+    public boolean delete(String id) throws SQLException, NamingException {
         String sql = "DELETE FROM product WHERE id = ?";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setString(1,id);
@@ -58,7 +60,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Product getProduct(String id) throws SQLException, NamingException {
+    public Product get(String id) throws SQLException, NamingException {
         String sql = "SELECT * FROM product WHERE id = ?";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setString(1,id);
@@ -79,6 +81,31 @@ public class ProductDaoImpl implements ProductDao {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<Product> getAll() throws SQLException, NamingException {
+        String sql = "SELECT * FROM product";
+        PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
+
+        List<Product> products = new ArrayList<>();
+
+        try{
+            ResultSet resultSet = pstm.executeQuery();
+            while (resultSet.next()) {
+                products.add(new Product(
+                        resultSet.getString("id"),
+                        resultSet.getString("name"),
+                        resultSet.getDouble("price"),
+                        resultSet.getDouble("qty")
+                ));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return products;
     }
 
     @Override

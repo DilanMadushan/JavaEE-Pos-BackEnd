@@ -16,7 +16,7 @@ import java.util.List;
 public class CustomerDaoImpl implements CustomerDao {
 
     @Override
-    public boolean saveCustomer(Customer customer) throws SQLException, NamingException {
+    public boolean save(Customer customer) throws SQLException, NamingException {
 
         String sql = "INSERT INTO customer VALUES(?,?,?,?)";
         Connection connection = DbConnection.getInstance().getConnection();
@@ -34,7 +34,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public boolean updateCustomer(Customer customer) throws SQLException, NamingException {
+    public boolean update(Customer customer) throws SQLException, NamingException {
         String sql = "UPDATE customer SET name = ? ,address = ? , tel = ? WHERE id = ?";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setString(1,customer.getName());
@@ -50,7 +50,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public boolean deleteCustomer(String id) throws SQLException, NamingException {
+    public boolean delete(String id) throws SQLException, NamingException {
         String sql = "DELETE FROM customer WHERE id = ?";
         Connection connection = DbConnection.getInstance().getConnection();
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -64,7 +64,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer getCustomer(String id) throws SQLException, NamingException {
+    public Customer get(String id) throws SQLException, NamingException {
         String sql = "SELECT * FROM customer WHERE id = ?";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setString(1,id);
@@ -87,7 +87,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public List<Customer> getAllCustomer() throws SQLException, NamingException {
+    public List<Customer> getAll() throws SQLException, NamingException {
 
         try{
             String sql = "SELECT * FROM customer";

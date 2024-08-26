@@ -10,13 +10,15 @@ import org.example.javeeepos.entity.Product;
 
 import javax.naming.NamingException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductBoImpl implements ProductBo {
 
     ProductDao productDao = new ProductDaoImpl();
     @Override
     public boolean saveProduct(ProductDto productDto) throws SQLException, NamingException {
-       return productDao.saveProduct(new Product(
+       return productDao.save(new Product(
                productDto.getId(),
                productDto.getName(),
                productDto.getPrice(),
@@ -26,7 +28,7 @@ public class ProductBoImpl implements ProductBo {
 
     @Override
     public boolean updateProduct(ProductDto productDto) throws SQLException, NamingException {
-        return productDao.updateProduct(new Product(
+        return productDao.update(new Product(
                 productDto.getId(),
                 productDto.getName(),
                 productDto.getPrice(),
@@ -36,18 +38,36 @@ public class ProductBoImpl implements ProductBo {
 
     @Override
     public boolean deleteProduct(String id) throws SQLException, NamingException {
-        return productDao.deleteProduct(id);
+        return productDao.delete(id);
     }
 
     @Override
     public ProductDto getProduct(String id) throws SQLException, NamingException {
-        Product product = productDao.getProduct(id);
+        Product product = productDao.get(id);
         return new ProductDto(
                 product.getId(),
                 product.getName(),
                 product.getPrice(),
                 product.getQty()
         );
+    }
+
+    @Override
+    public List<ProductDto> getAllProduct() throws SQLException, NamingException {
+        List<Product> products =  productDao.getAll();
+        List<ProductDto> productDto = new ArrayList<>();
+
+        for (Product product : products) {
+            productDto.add(new ProductDto(
+                    product.getId(),
+                    product.getName(),
+                    product.getPrice(),
+                    product.getQty()
+            ));
+
+        }
+        return productDto;
+
     }
 
     @Override

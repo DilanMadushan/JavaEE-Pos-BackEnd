@@ -4,6 +4,7 @@ import org.example.javeeepos.bo.OrderBo;
 import org.example.javeeepos.bo.impl.OrderBoImpl;
 import org.example.javeeepos.dao.OrderDao;
 import org.example.javeeepos.dto.OrderDto;
+import org.example.javeeepos.entity.Customer;
 import org.example.javeeepos.entity.Order;
 import org.example.javeeepos.util.DbConnection;
 
@@ -11,11 +12,12 @@ import javax.naming.NamingException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class OrderDaoImpl implements OrderDao{
 
     @Override
-    public boolean saveOrder(Order order) throws SQLException, NamingException {
+    public boolean save(Order order) throws SQLException, NamingException {
         String sql = "INSERT INTO orders VALUES(?,?,?)";
         PreparedStatement pstm = DbConnection.getInstance().getConnection().prepareStatement(sql);
         pstm.setString(1,order.getOrderId());
@@ -26,9 +28,29 @@ public class OrderDaoImpl implements OrderDao{
             return pstm.executeUpdate()>0;
 
         }catch (Exception e){
-            e.printStackTrace();
+            return false;
         }
 
+    }
+
+    @Override
+    public boolean update(Order customer) throws SQLException, NamingException {
         return false;
     }
+
+    @Override
+    public boolean delete(String id) throws SQLException, NamingException {
+        return false;
+    }
+
+    @Override
+    public Order get(String id) throws SQLException, NamingException {
+        return null;
+    }
+
+    @Override
+    public List<Order> getAll() throws SQLException, NamingException {
+        return null;
+    }
+
 }

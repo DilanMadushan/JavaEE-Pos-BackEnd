@@ -24,8 +24,11 @@ import org.example.javeeepos.dto.ProductDto;
 import org.example.javeeepos.util.DbConnection;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Wrapper;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +39,8 @@ public class OrderController extends HttpServlet {
     Connection connection  = null;
     OrderBo orderBo = new OrderBoImpl();
     ProductBo productBo = new ProductBoImpl();
-
     OrderDetailsBo orderDetailsBo = new OrderDetailsBoImpl();
+    boolean isPlaced = false;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -65,13 +68,23 @@ public class OrderController extends HttpServlet {
             ));
         }
 
+        placeOrder(detailsDto,orderDto,productList);
 
+        if (isPlaced) {
+            resp.getWriter().println("Placed");
+        }
+
+
+
+    }
+
+    public void placeOrder( List<OrderDetailsDto> detailsDto, OrderDto orderDto,List<ProductDto> productList){
         new Thread(new Runnable() {
             @SneakyThrows
             @Override
             public void run() {
 
-                try(var writer = resp.getWriter()){
+                try{
                     connection = DbConnection.getInstance().getConnection();
                     connection.setAutoCommit(false);
 
@@ -98,6 +111,7 @@ public class OrderController extends HttpServlet {
 
                             if (isDetailSaved) {
                                 connection.commit();
+                                isPlaced =  true;
                             }else{
                                 connection.rollback();
                             }
@@ -117,11 +131,8 @@ public class OrderController extends HttpServlet {
                 }finally {
                     connection.setAutoCommit(true);
                 }
-
             }
         }).start();
-
-
     }
 
 

@@ -14,7 +14,7 @@ public class OrderDetailsBoImpl implements OrderDetailsBo {
     OrderDetailsDao orderDetailsDao = new OrderDetailsDaoImpl();
     @Override
     public boolean saveOrderDetails(OrderDetailsDto orderDto) throws SQLException, NamingException {
-        return orderDetailsDao.saveOrderDetails(new OrderDetails(
+        return orderDetailsDao.save(new OrderDetails(
                 orderDto.getOrderId(),
                 orderDto.getCusId(),
                 orderDto.getProId(),

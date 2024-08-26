@@ -16,7 +16,7 @@ public class customerBoImpl implements CustomerBo {
     CustomerDao customerDao = new CustomerDaoImpl();
     @Override
     public boolean saveCustomer(CustomerDTO customerDTO) throws SQLException, NamingException {
-        return customerDao.saveCustomer(new Customer(
+        return customerDao.save(new Customer(
                 customerDTO.getId(),
                 customerDTO.getName(),
                 customerDTO.getAddress(),
@@ -26,7 +26,7 @@ public class customerBoImpl implements CustomerBo {
 
     @Override
     public boolean updateCustomer(CustomerDTO customerDTO) throws SQLException, NamingException {
-        return customerDao.updateCustomer(new Customer(
+        return customerDao.update(new Customer(
                 customerDTO.getId(),
                 customerDTO.getName(),
                 customerDTO.getAddress(),
@@ -36,7 +36,7 @@ public class customerBoImpl implements CustomerBo {
 
     @Override
     public CustomerDTO getCustomer(String id) throws SQLException, NamingException {
-        Customer customer = customerDao.getCustomer(id);
+        Customer customer = customerDao.get(id);
         return new CustomerDTO(
                 customer.getId(),
                 customer.getName(),
@@ -47,7 +47,7 @@ public class customerBoImpl implements CustomerBo {
 
     @Override
     public List<CustomerDTO> getAllCustomer() throws SQLException, NamingException {
-        List<Customer> customers =  customerDao.getAllCustomer();
+        List<Customer> customers =  customerDao.getAll();
         List<CustomerDTO> cusSet = new ArrayList<>();
         for(Customer cus: customers){
             cusSet.add(new CustomerDTO(
@@ -62,6 +62,6 @@ public class customerBoImpl implements CustomerBo {
 
     @Override
     public boolean DeleteCustomer(String id) throws SQLException, NamingException {
-        return customerDao.deleteCustomer(id);
+        return customerDao.delete(id);
     }
 }
