@@ -1,9 +1,6 @@
 package org.example.javeeepos.dao;
 
-import org.example.javeeepos.dao.custom.impl.CustomerDaoImpl;
-import org.example.javeeepos.dao.custom.impl.OrderDaoImpl;
-import org.example.javeeepos.dao.custom.impl.OrderDetailsDaoImpl;
-import org.example.javeeepos.dao.custom.impl.ProductDaoImpl;
+import org.example.javeeepos.dao.custom.impl.*;
 
 public class DaoFactory {
     public static DaoFactory daoFactory;
@@ -16,7 +13,7 @@ public class DaoFactory {
     }
 
     public enum DaoTypes{
-        CUSTOMER,PRODUCT,ORDER,ORDERDETAILS
+        CUSTOMER,PRODUCT,ORDER,ORDERDETAILS,USER
     }
 
     public SuperDao getDao(DaoTypes daoTypes){
@@ -26,6 +23,7 @@ public class DaoFactory {
             case PRODUCT: return new ProductDaoImpl();
             case ORDER: return new OrderDaoImpl();
             case ORDERDETAILS: return new OrderDetailsDaoImpl();
+            case USER: return new UserDaoImpl();
         }
         return null;
     }

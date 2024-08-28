@@ -68,6 +68,9 @@ public class ProductController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        System.out.println("Awa");
+
         Jsonb jsonb = JsonbBuilder.create();
         ProductDto productDto = jsonb.fromJson(req.getReader(), ProductDto.class);
 

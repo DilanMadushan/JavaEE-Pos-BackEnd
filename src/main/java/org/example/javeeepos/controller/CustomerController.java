@@ -55,6 +55,7 @@ public class CustomerController extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Jsonb jsonb = JsonbBuilder.create();
         CustomerDTO customerDao =  jsonb.fromJson(req.getReader(), CustomerDTO.class);
+
         try (PrintWriter printWriter = resp.getWriter()){
             boolean isSaved = customerBo.saveCustomer(customerDao);
 

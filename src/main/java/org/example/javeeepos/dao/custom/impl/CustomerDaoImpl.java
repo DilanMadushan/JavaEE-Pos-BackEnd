@@ -23,7 +23,6 @@ public class CustomerDaoImpl implements CustomerDao {
         try {
             return sqlUtil.execute("INSERT INTO customer VALUES(?,?,?,?)",
                     customer.getId(),customer.getName(),customer.getAddress(),customer.getTel());
-
         }catch (Exception e){
             return false;
         }

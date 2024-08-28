@@ -1,9 +1,6 @@
 package org.example.javeeepos.bo;
 
-import org.example.javeeepos.bo.Custom.impl.CustomerBoImpl;
-import org.example.javeeepos.bo.Custom.impl.OrderBoImpl;
-import org.example.javeeepos.bo.Custom.impl.OrderDetailsBoImpl;
-import org.example.javeeepos.bo.Custom.impl.ProductBoImpl;
+import org.example.javeeepos.bo.Custom.impl.*;
 
 public class BoFactory {
     public static BoFactory boFactory;
@@ -17,7 +14,7 @@ public class BoFactory {
     }
 
     public enum BoTypes{
-        CUSTOMER,PRODUCT,ORDER,ORDERDETAILS
+        CUSTOMER,PRODUCT,ORDER,ORDERDETAILS,USER
     }
 
     public SuperBo getBo(BoTypes boTypes){
@@ -26,6 +23,7 @@ public class BoFactory {
             case PRODUCT: return new ProductBoImpl();
             case CUSTOMER: return new CustomerBoImpl();
             case ORDERDETAILS: return new OrderDetailsBoImpl();
+            case USER: return new UserBoImpl();
         }
         return null;
     }
