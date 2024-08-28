@@ -5,6 +5,7 @@ import org.example.javeeepos.dao.custom.UserDao;
 import org.example.javeeepos.entity.User;
 
 import javax.naming.NamingException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -33,6 +34,15 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User get(String id) throws SQLException, NamingException {
+        ResultSet resultSet = sqlUtil.execute("SELECT * FROM user WHERE id = ?",id);
+
+        while (resultSet.next()) {
+            return new User(
+                    resultSet.getString("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("password")
+            );
+        }
         return null;
     }
 
