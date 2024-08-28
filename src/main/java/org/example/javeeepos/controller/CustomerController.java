@@ -11,6 +11,8 @@ import org.example.javeeepos.bo.BoFactory;
 import org.example.javeeepos.bo.Custom.CustomerBo;
 import org.example.javeeepos.bo.Custom.impl.CustomerBoImpl;
 import org.example.javeeepos.dto.CustomerDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
 import java.io.IOException;
@@ -20,7 +22,6 @@ import java.util.List;
 
 @WebServlet(urlPatterns = "/customer")
 public class CustomerController extends HttpServlet{
-
     CustomerBo customerBo = (CustomerBo) BoFactory.getBoFactory().getBo(BoFactory.BoTypes.CUSTOMER);
 
     @Override

@@ -19,6 +19,8 @@ import org.example.javeeepos.dto.OrderDetailsDto;
 import org.example.javeeepos.dto.OrderDto;
 import org.example.javeeepos.dto.ProductDto;
 import org.example.javeeepos.util.DbConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -34,6 +36,8 @@ public class OrderController extends HttpServlet {
     ProductBo productBo = (ProductBo) BoFactory.getBoFactory().getBo(BoFactory.BoTypes.PRODUCT);
     OrderDetailsBo orderDetailsBo = (OrderDetailsBo) BoFactory.getBoFactory().getBo(BoFactory.BoTypes.ORDERDETAILS);
     boolean isPlaced = false;
+
+    static Logger logger = LoggerFactory.getLogger("OrderController");
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -95,6 +99,7 @@ public class OrderController extends HttpServlet {
 
                         if (isUpdated) {
                             System.out.println("Updated");
+                            logger.info("Order Placed");
                             boolean isDetailSaved = false;
 
                             for (OrderDetailsDto dto : detailsDto) {
@@ -104,8 +109,8 @@ public class OrderController extends HttpServlet {
                             System.out.println(isDetailSaved);
 
                             if (isDetailSaved) {
-                                connection.commit();
                                 isPlaced =  true;
+                                connection.commit();
                             }else{
                                 connection.rollback();
                             }
